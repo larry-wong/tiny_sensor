@@ -1,0 +1,6 @@
+substitutions:
+  name: study
+  friendly_name: Study
+  ip_addr: !secret ip_study
+
+<<: !include base.yaml

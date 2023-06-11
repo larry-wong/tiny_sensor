@@ -1,0 +1,108 @@
+esphome:
+  name: $name
+  includes:
+    - ir_sender.h
+  libraries:
+    - IRremoteESP8266
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: arduino
+  variant: esp32s3
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    static_ip: $ip_addr
+    gateway: !secret gateway
+    subnet: !secret subnet
+  power_save_mode: none
+  output_power: 20.5
+
+mqtt:
+  broker: !secret mqtt_broker
+  port: !secret mqtt_port
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  discovery: false
+  on_message:
+    topic: /ir/send/$name
+    then:
+      - light.turn_on: light_status
+      - delay: 0s
+      - lambda: |-
+          send_ir(&x[0], x.size());
+      - light.turn_off: light_status
+
+i2c:
+  sda: GPIO10
+  scl: GPIO9
+
+uart:
+  baud_rate: 256000
+  tx_pin: GPIO14
+  rx_pin: GPIO13
+
+ld2410:
+  timeout: 5s
+  max_move_distance: 3m
+  max_still_distance: 3m
+  g0_move_threshold: 50
+  g0_still_threshold: 80
+  g1_move_threshold: 50
+  g1_still_threshold: 80
+  g2_move_threshold: 40
+  g2_still_threshold: 80
+  g3_move_threshold: 30
+  g3_still_threshold: 80
+  g4_move_threshold: 20
+  g4_still_threshold: 80
+  g5_move_threshold: 15
+  g5_still_threshold: 80
+  g6_move_threshold: 15
+  g6_still_threshold: 80
+  g7_move_threshold: 15
+  g7_still_threshold: 80
+  g8_move_threshold: 15
+  g8_still_threshold: 80
+
+sensor:
+  - platform: bh1750
+    name: $friendly_name Immunination
+  - platform: hdc1080
+    temperature:
+      name: $friendly_name Temperature
+    humidity:
+      name: $friendly_name Humidity
+  - platform: ld2410
+    detection_distance:
+      name: $friendly_name Detection Distance
+
+binary_sensor:
+  - platform: ld2410
+    has_target:
+      name: $friendly_name Presence
+
+light:
+  - platform: status_led
+    id: light_status
+    name: $friendly_name Status
+    pin: GPIO11
+
+custom_component:
+  - lambda: |-
+      auto ir_sender = new IRSender();
+      return {ir_sender};

@@ -1,0 +1,6 @@
+substitutions:
+  name: bathroom
+  friendly_name: Bathroom
+  ip_addr: !secret ip_bathroom
+
+<<: !include base.yaml
