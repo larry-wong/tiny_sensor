@@ -22,7 +22,7 @@
     | D- (A7, B7) | GPIO44 | RX |
 
 ## 电路设计
-原理图及 PCB 采用 kicad 绘制，项目文件见 circut 目录（依赖 [ESPRESSIF 官方库](https://github.com/espressif/kicad-libraries)）。
+原理图及 PCB 使用 kicad 绘制，项目文件见 circut 目录（依赖 [ESPRESSIF 官方库](https://github.com/espressif/kicad-libraries)）。
 
 * 所有贴片元件均采用 0805 封装尺寸
 * 红外管引脚可多留一些，以调整发射方向
