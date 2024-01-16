@@ -2,7 +2,7 @@
 #include <IRremoteESP8266.h>
 #include <IRsend.h>
 
-const uint16_t IR_PIN = 12;
+const uint16_t IR_PIN = 14;
 
 // For IR
 IRsend irsend(IR_PIN);

@@ -1,9 +1,11 @@
 esphome:
   name: $name
+  friendly_name: $friendly_name
   includes:
     - ir_sender.h
   libraries:
     - IRremoteESP8266
+  min_version: 2023.12.6
 
 esp32:
   board: esp32-s3-devkitc-1
@@ -48,59 +50,98 @@ mqtt:
       - light.turn_off: light_status
 
 i2c:
-  sda: GPIO10
-  scl: GPIO9
+  sda: GPIO11
+  scl: GPIO10
 
 uart:
   baud_rate: 256000
-  tx_pin: GPIO14
-  rx_pin: GPIO13
+  tx_pin: GPIO47
+  rx_pin: GPIO48
 
 ld2410:
-  timeout: 5s
-  max_move_distance: 3m
-  max_still_distance: 3m
-  g0_move_threshold: 50
-  g0_still_threshold: 80
-  g1_move_threshold: 50
-  g1_still_threshold: 80
-  g2_move_threshold: 40
-  g2_still_threshold: 80
-  g3_move_threshold: 30
-  g3_still_threshold: 80
-  g4_move_threshold: 20
-  g4_still_threshold: 80
-  g5_move_threshold: 15
-  g5_still_threshold: 80
-  g6_move_threshold: 15
-  g6_still_threshold: 80
-  g7_move_threshold: 15
-  g7_still_threshold: 80
-  g8_move_threshold: 15
-  g8_still_threshold: 80
 
 sensor:
   - platform: bh1750
-    name: $friendly_name Immunination
+    name: Immunination
   - platform: hdc1080
     temperature:
-      name: $friendly_name Temperature
+      name: Temperature
     humidity:
-      name: $friendly_name Humidity
+      name: Humidity
   - platform: ld2410
     detection_distance:
-      name: $friendly_name Detection Distance
+      name: Detection Distance
 
 binary_sensor:
   - platform: ld2410
     has_target:
-      name: $friendly_name Presence
+      name: Presence
+
+switch:
+  - platform: ld2410
+    bluetooth:
+      name: ld2410 Bluetooth
+
+number:
+  - platform: ld2410
+    timeout:
+      name: Presence Timeout
+    max_move_distance_gate:
+      name: Max Move Distance Gate
+    max_still_distance_gate:
+      name: Max Still Distance Gate
+    g0:
+      move_threshold:
+        name: g0 Move Threshold
+      still_threshold:
+        name: g0 Still Threshold
+    g1:
+      move_threshold:
+        name: g1 Move Threshold
+      still_threshold:
+        name: g1 Still Threshold
+    g2:
+      move_threshold:
+        name: g2 Move Threshold
+      still_threshold:
+        name: g2 Still Threshold
+    g3:
+      move_threshold:
+        name: g3 Move Threshold
+      still_threshold:
+        name: g3 Still Threshold
+    g4:
+      move_threshold:
+        name: g4 Move Threshold
+      still_threshold:
+        name: g4 Still Threshold
+    g5:
+      move_threshold:
+        name: g5 Move Threshold
+      still_threshold:
+        name: g5 Still Threshold
+    g6:
+      move_threshold:
+        name: g6 Move Threshold
+      still_threshold:
+        name: g6 Still Threshold
+    g7:
+      move_threshold:
+        name: g7 Move Threshold
+      still_threshold:
+        name: g7 Still Threshold
+    g8:
+      move_threshold:
+        name: g8 Move Threshold
+      still_threshold:
+        name: g8 Still Threshold
 
 light:
   - platform: status_led
     id: light_status
-    name: $friendly_name Status
-    pin: GPIO11
+    name: Status
+    pin: GPIO12
+    icon: "mdi:led-outline"
 
 custom_component:
   - lambda: |-
